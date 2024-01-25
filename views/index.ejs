@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <title>Permalist</title>
+</head>
+<body>
+    <% if(locals.tasks) { %>
+        <ul>
+            <% tasks.forEach(item => { %>
+                <li id="<%= item.id %>"><%= item.task %></li>                
+            <% }); %>   
+        </ul>
+        
+    <% } else { %>
+        <% console.log("No data from index.js"); %>
+        
+    <% } %>
+    <form id="addtask" action="/add" method="post">
+        <input type="text" name="newtask" placeholder="Add new task here">
+        <button type="submit">Add</button>
+    </form>
+    
+</body>
+</html>
