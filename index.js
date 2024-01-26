@@ -21,32 +21,54 @@ db.connect();
 
 let tasks = [];
 
-app.get("/",async (req, res) => {
-    const result = await db.query("SELECT * FROM tasks");
-    tasks = result.rows;
-    res.render("index.ejs",{tasks: tasks});
-
-});
-
-app.post("/add", async (req, res) => {
-    const newTask = req.body.newtask;
-    
+app.get("/", async (req, res) => {
     try {
-        if(newTask){
-            await db.query("INSERT INTO tasks(task) VALUES ($1)",[newTask]);
-            res.redirect("/");
-
-        }else{
-            console.log("Task is an empty string");
-            res.redirect("/");
-        }
+        const result = await db.query("SELECT * FROM tasks");
+        tasks = result.rows;
+        res.render("index.ejs", {tasks: tasks});
         
     } catch (error) {
         console.log(error);
         res.redirect("/");
     }
-    
-})
+});
+
+app.post("/add", async (req, res) => {   
+    try {
+        const newTask = req.body.newtask; 
+        if(newTask){
+            await db.query("INSERT INTO tasks(task) VALUES ($1)",[newTask]);
+            console.log("Task added succesfully");
+            res.redirect("/");
+
+        }else{
+            console.log("do not add an empty task");
+            res.redirect("/");
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect("/");
+    }
+});
+
+app.post("/delete", async (req, res) => {
+    try {
+        const id = req.body.deletetask;
+        if(id) {
+            await db.query("DELETE FROM tasks WHERE id = $1",[id]);
+            console.log("Task deleted successfully");
+            res.redirect("/");
+
+        }else{
+            console.log("something wrong with task id");
+            res.redirect("/");
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect("/");
+    }
+
+});
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

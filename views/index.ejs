@@ -9,20 +9,24 @@
 </head>
 <body>
     <% if(locals.tasks) { %>
-        <ul>
-            <% tasks.forEach(item => { %>
-                <li id="<%= item.id %>"><%= item.task %></li>                
-            <% }); %>   
-        </ul>
         
+        <% tasks.forEach(item => { %>
+            <div class="<%= item.id %>">
+                <form action="/delete" method="post">
+                    <input type="checkbox" name="deletetask" value="<%= item.id %>" onchange="this.form.submit()">
+                </form>
+                <p><%= item.task %></p>
+            </div>                
+        <% }); %>   
+            
     <% } else { %>
         <% console.log("No data from index.js"); %>
-        
+
     <% } %>
-    <form id="addtask" action="/add" method="post">
+
+    <form id="addtask" action="/add" method="post" autocomplete="off">
         <input type="text" name="newtask" placeholder="Add new task here">
         <button type="submit">Add</button>
-    </form>
-    
+    </form>    
 </body>
 </html>
